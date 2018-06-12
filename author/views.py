@@ -19,11 +19,9 @@ def register():
         hashed_password = generate_password_hash(form.password.data)
         # check_password_hash(hash, 'barfoo')
         author = Author(
-            form.fullname.data,
+            form.full_name.data,
             form.email.data,
-            form.username.data,
-            hashed_password,
-            False
+            hashed_password
         )
         db.session.add(author)
         db.session.commit()
