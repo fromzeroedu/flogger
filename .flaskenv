@@ -6,3 +6,4 @@ DB_PASSWORD=flogger_password
 DB_HOST=localhost
 DATABASE_NAME=flogger
 MYSQL_ROOT_PASSWORD=rootpass
+BLOG_NAME='The Flogger Blog'

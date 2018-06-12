@@ -2,6 +2,8 @@
 
 {% block title %}Author Login{% endblock %}
 
+{% block nav %}{% include 'nav.html' %}{% endblock %}
+
 {% block content %}
 
 <div class="row">
@@ -10,7 +12,7 @@
 
     {% include '_flashmessages.html' %}
 
-    <h3>User Login</h3>
+    <h4>User Login</h4>
 
     {% if error %}
     <div class="error text-danger">{{ error }}</div>
