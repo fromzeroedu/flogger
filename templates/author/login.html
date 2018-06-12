@@ -17,7 +17,7 @@
     {% endif %}
 
     {% from "_formhelpers.html" import render_field %}
-    <form method="POST" action="{{ url_for('login')}}" role="form">
+    <form method="POST" action="{{ url_for('.login')}}" role="form">
 
       {{ form.hidden_tag() }}
 
