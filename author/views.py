@@ -43,6 +43,7 @@ def login():
         if author:
             if check_password_hash(author.password, form.password.data):
                 session['id'] = author.id
+                session['full_name'] = author.full_name
                 if 'next' in session:
                     next = session.get('next')
                     session.pop('next')
