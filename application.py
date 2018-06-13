@@ -20,8 +20,10 @@ def create_app(**config_overrides):
 
     # import blueprints
     from author.views import author_app
+    from blog.views import blog_app
 
     # register blueprints
     app.register_blueprint(author_app)
+    app.register_blueprint(blog_app)
 
     return app

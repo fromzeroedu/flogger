@@ -8,10 +8,6 @@ from author.models import Author
 
 author_app = Blueprint('author_app', __name__)
 
-@author_app.route('/')
-def index():
-    return f"<h1>Author Home - {session['id']}</h1>"
-
 @author_app.route('/register', methods=('GET', 'POST'))
 def register():
     form = RegisterForm()
@@ -49,7 +45,7 @@ def login():
                     session.pop('next')
                     return redirect(next)
                 else:
-                    return redirect(url_for('.index'))
+                    return redirect(url_for('blog_app.index'))
             else:
                 error = "Incorrect password"
         else:

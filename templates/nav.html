@@ -1,14 +1,21 @@
-<nav class="navbar">
-  <div class="nav-brand "><h2>{{ config['BLOG_NAME'] }}</h2></div>
-  <ul class="navbar-nav justify-content-end">
-    {% if session.id %}
-    <li class="nav-item">
-      <a class="nav-link active" href="{{ url_for('author_app.logout')}}">Logout</a>
-    </li>
-    {% else %}
-    <li class="nav-item">
-      <a class="nav-link active" href="{{ url_for('author_app.login')}}">Login</a>
-    </li>
-    {% endif %}
-  </ul>
-</nav>
+<div class="container pb-3">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">{{ config['BLOG_NAME'] }}</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        {% if session.id %}
+        <li class="nav-item">
+          <span class="navbar-text text-dark">{{ session.full_name }}</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('author_app.logout')}}">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('author_app.login')}}">Login</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+</div>
