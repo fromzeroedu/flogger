@@ -1,6 +1,7 @@
 import os
 import unittest
 import pathlib
+from flask import session
 
 from dotenv import load_dotenv
 env_dir = pathlib.Path(__file__).parents[1]
@@ -33,5 +34,54 @@ class AuthorTest(unittest.TestCase):
             db.drop_all()
         self.test_db.drop_db()
 
+    def user_dict(self):
+        return dict(
+                full_name='John Smith',
+                email='jsmith@example.com',
+                password='test123',
+                confirm='test123'
+                )
+
     def test_user_register(self):
-        pass
+        # Check user registration
+        rv = self.app.post('/register', data=self.user_dict(),
+            follow_redirects=True)
+        assert 'You are now registered' in str(rv.data)
+
+        # If we want to check things as we were running in a views.py
+        # we need to instantiate a context
+        with self.app as c:
+            rv = c.get('/')
+            assert Author.query.filter_by(email=self.user_dict()['email']).count() == 1
+
+        # Try to register user with the same email
+        rv = self.app.post('/register', data=self.user_dict(),
+            follow_redirects=True)
+        assert 'Email already in use' in str(rv.data)
+
+        # Try to register user with mismatching passwords
+        user2 = self.user_dict()
+        user2['email'] = 'john@example.com'
+        user2['confirm'] = 'test456'
+        rv = self.app.post('/register', data=user2,
+            follow_redirects=True)
+        assert 'Passwords must match' in str(rv.data)
+
+    def test_user_login(self):
+        # Register the user
+        rv = self.app.post('/register', data=self.user_dict())
+
+        # Try to login
+        rv = self.app.post('/login', data=self.user_dict(),
+            follow_redirects=True)
+
+        # we need an active HTTP connection for the following
+        # two lines, so we enclose both in a context
+        with self.app as c:
+            rv = c.get('/')
+            assert session['id'] == 1
+
+        # Now logout
+        with self.app as c:
+            rv = c.get('/logout', follow_redirects=True)
+            assert session.get('id') is None

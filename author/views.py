@@ -48,5 +48,6 @@ def login():
 @author_app.route('/logout')
 def logout():
     session.pop('id')
+    session.pop('full_name')
     flash("User logged out")
     return redirect(url_for('.login'))
