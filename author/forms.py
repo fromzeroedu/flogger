@@ -23,11 +23,11 @@ class LoginForm(FlaskForm):
 
         if author:
             if not check_password_hash(author.password, self.password.data):
-                self.password.errors.append('Incorrect username or password')
+                self.password.errors.append('Incorrect email or password')
                 return False
             return True
         else:
-            self.password.errors.append('Incorrect username or password')
+            self.password.errors.append('Incorrect email or password')
 
 class RegisterForm(FlaskForm):
     full_name = StringField('Full Name', [validators.Required()])
