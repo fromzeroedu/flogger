@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import validators, StringField, PasswordField, ValidationError
 from wtforms.fields.html5 import EmailField
+from werkzeug.security import check_password_hash
 
 from author.models import Author
 
@@ -11,8 +12,30 @@ class LoginForm(FlaskForm):
             validators.Length(min=4, max=80)
         ])
 
-class RegisterForm(LoginForm):
+    def validate(self):
+        rv = FlaskForm.validate(self)
+        if not rv:
+            return False
+
+        author = Author.query.filter_by(
+            email=self.email.data,
+            ).first()
+
+        if author:
+            if not check_password_hash(author.password, self.password.data):
+                self.password.errors.append('Incorrect username or password')
+                return False
+            return True
+        else:
+            self.password.errors.append('Incorrect username or password')
+
+class RegisterForm(FlaskForm):
     full_name = StringField('Full Name', [validators.Required()])
+    email = EmailField('Email address', [validators.DataRequired(), validators.Email()])
+    password = PasswordField('New Password', [
+            validators.Required(),
+            validators.Length(min=4, max=80)
+        ])
     confirm = PasswordField('Repeat Password', [
             validators.EqualTo('password', message='Passwords must match'),
     ])

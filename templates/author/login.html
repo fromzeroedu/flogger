@@ -12,11 +12,7 @@
 
     {% include '_flashmessages.html' %}
 
-    <h4>User Login</h4>
-
-    {% if error %}
-    <div class="error text-danger">{{ error }}</div>
-    {% endif %}
+    <h4>Author Login</h4>
 
     {% from "_formhelpers.html" import render_field %}
     <form method="POST" action="{{ url_for('.login')}}" role="form">
