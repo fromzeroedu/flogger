@@ -10,9 +10,14 @@
 
   <div class="offset-md-2 col-md-8">
 
-    {% if action=="new" %}<h3>New Blog Post</h3>{% else %}<h3>Edit Blog Post</h3>{% endif %}
+    {% if action=="new" %}
+      <h3>New Blog Post</h3>
+    {% else %}
+      <h3>Edit Blog Post</h3>
+    {% endif %}
 
     {% from "_formhelpers.html" import render_field %}
+
     {% if action=="new" %}
       <form method="POST" action="{{ url_for('.post') }}" enctype="multipart/form-data" role="form">
     {% else %}

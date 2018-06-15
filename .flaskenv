@@ -7,3 +7,4 @@ DB_HOST=localhost
 DATABASE_NAME=flogger
 MYSQL_ROOT_PASSWORD=rootpass
 BLOG_NAME='The Flogger Blog'
+BLOG_POST_IMAGES_PATH='/opt/flogger/static/images/uploads'

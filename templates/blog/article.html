@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block nav %}{% include 'nav.html' %}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="offset-md-2 col-md-8">
+
+    {% include '_flashmessages.html' %}
+
+    {% if post.image %}
+    <div class="container pt-3">
+      <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.lg.png') }}" width="600px" class="img-rounded" />
+    </div>
+    {% endif %}
+
+    <h1 class="pt-3">{{ post.title }}</h1>
+
+    {{ post.body|markdown }}
+
+    <hr />
+    <div class="text-muted">Posted by {{ post.author.full_name }} on {{ post.publish_date.strftime('%Y-%m-%d') }} in {{ post.category.name }}
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

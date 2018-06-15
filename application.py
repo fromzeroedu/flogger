@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flaskext.markdown import Markdown
 
 # setup db
 db = SQLAlchemy()
@@ -17,6 +18,9 @@ def create_app(**config_overrides):
     # initialize db
     db.init_app(app)
     migrate = Migrate(app, db)
+
+    # Markdown
+    Markdown(app)
 
     # import blueprints
     from author.views import author_app
