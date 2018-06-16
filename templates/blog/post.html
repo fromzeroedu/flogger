@@ -27,7 +27,7 @@
     {{ form.hidden_tag() }}
 
     {% if post and post.image %}
-      <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.lg.png') }}" width="300px" class="img-rounded" />
+      <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.sm.png') }}" class="img-thumbnail" />
     {% endif %}
 
     {{ render_field(form.image, class='form-control') }}

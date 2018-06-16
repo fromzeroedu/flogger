@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, session, request, redirect, url_for
+from flask import Blueprint, render_template, session, request, redirect,\
+    url_for, flash
 import uuid
 import os
 from PIL import Image
@@ -17,7 +18,7 @@ POSTS_PER_PAGE = 5
 
 @blog_app.route('/')
 def index():
-    page = request.values.get('page', 1)
+    page = int(request.values.get('page', '1'))
     posts = Post.query.filter_by(live=True).order_by(Post.publish_date.desc())\
         .paginate(page, POSTS_PER_PAGE, False)
     return render_template('blog/index.html', posts=posts)
@@ -28,6 +29,7 @@ def post():
     form = PostForm()
     if form.validate_on_submit():
         image_id = None
+
         if form.image.data:
             # process image
             f = form.image.data
@@ -84,22 +86,33 @@ def edit(slug):
     if form.validate_on_submit():
         original_image = post.image
         form.populate_obj(post)
+
         if form.image.data:
-            image = request.files.get('image')
-            try:
-                filename = uploaded_images.save(image)
-            except:
-                flash("The image was not uploaded")
-            if filename:
-                post.image = filename
+            # process image
+            f = form.image.data
+            image_id = str(uuid.uuid4())
+            file_name = image_id + '.png'
+            file_path = os.path.join(
+                BLOG_POST_IMAGES_PATH, file_name
+            )
+            Image.open(f).save(file_path)
+
+            # create sizes
+            _image_resize(BLOG_POST_IMAGES_PATH, image_id, 600, 'lg')
+            _image_resize(BLOG_POST_IMAGES_PATH, image_id, 300, 'sm')
+
+            post.image = image_id
         else:
             post.image = original_image
+
         if form.new_category.data:
             new_category = Category(form.new_category.data)
             db.session.add(new_category)
             db.session.flush()
             post.category = new_category
+
         db.session.commit()
+        flash('Article edited')
         return redirect(url_for('.article', slug=post.slug))
     return render_template('blog/post.html', form=form, post=post, action="edit")
 

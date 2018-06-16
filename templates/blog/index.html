@@ -10,6 +10,8 @@
 
   <div class="offset-md-2 col-md-8 pt-5">
 
+    {% include '_flashmessages.html' %}
+
     <div class="post-list">
       {% for post in posts.items %}
       <div class="row post-item pt-3">
@@ -21,7 +23,7 @@
         </div>
         <div class="col-md-3">
           {% if post.image %}
-            <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.sm.png') }}" width="300px" class="img-rounded" />
+            <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.sm.png') }}" class="img-thumbnail" />
           {% endif %}
         </div>
       </div>
@@ -36,10 +38,10 @@
 
   <div class="offset-md-2 col-md-8 pt-5">
       {% if posts.has_prev %}
-        <a href="{{ url_for('index', page=posts.prev_num) }}">&lt;&lt; Newer posts</a>
+        <a href="{{ url_for('.index', page=posts.prev_num) }}">&lt;&lt; Newer posts</a>
       {% endif %}
       {% if posts.has_next %}
-        | <a href="{{ url_for('index', page=posts.next_num) }}">Older posts &gt;&gt;</a>
+        <a href="{{ url_for('.index', page=posts.next_num) }}">Older posts &gt;&gt;</a>
       {% endif %}
   </div>
 

@@ -14,7 +14,7 @@
 
     {% if post.image %}
     <div class="container pt-3">
-      <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.lg.png') }}" width="600px" class="img-rounded" />
+      <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.lg.png') }}" class="img-fluid" />
     </div>
     {% endif %}
 
@@ -26,7 +26,8 @@
     <div class="text-muted">
       Posted by {{ post.author.full_name }} on {{ post.publish_date.strftime('%Y-%m-%d') }} in {{ post.category.name }}
       {% if session.id %}
-      <a href="{{ url_for('.edit', slug=post.slug) }}">Edit</a>
+      - <a href="{{ url_for('.edit', slug=post.slug) }}">Edit</a>
+      - <a href="{{ url_for('.delete', slug=post.slug) }}">Delete</a>
       {% endif %}
     </div>
 
