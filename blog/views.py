@@ -13,11 +13,16 @@ from settings import BLOG_POST_IMAGES_PATH
 
 blog_app = Blueprint('blog_app', __name__)
 
+POSTS_PER_PAGE = 5
+
 @blog_app.route('/')
 def index():
-    return render_template('blog/index.html')
+    page = request.values.get('page', 1)
+    posts = Post.query.filter_by(live=True).order_by(Post.publish_date.desc())\
+        .paginate(page, POSTS_PER_PAGE, False)
+    return render_template('blog/index.html', posts=posts)
 
-@blog_app.route('/posts', methods=('GET', 'POST'))
+@blog_app.route('/post', methods=('GET', 'POST'))
 @login_required
 def post():
     form = PostForm()
@@ -70,6 +75,42 @@ def post():
 def article(slug):
     post = Post.query.filter_by(slug=slug).first_or_404()
     return render_template('blog/article.html', post=post)
+
+@blog_app.route('/edit/<slug>', methods=('GET', 'POST'))
+@login_required
+def edit(slug):
+    post = Post.query.filter_by(slug=slug).first_or_404()
+    form = PostForm(obj=post)
+    if form.validate_on_submit():
+        original_image = post.image
+        form.populate_obj(post)
+        if form.image.data:
+            image = request.files.get('image')
+            try:
+                filename = uploaded_images.save(image)
+            except:
+                flash("The image was not uploaded")
+            if filename:
+                post.image = filename
+        else:
+            post.image = original_image
+        if form.new_category.data:
+            new_category = Category(form.new_category.data)
+            db.session.add(new_category)
+            db.session.flush()
+            post.category = new_category
+        db.session.commit()
+        return redirect(url_for('.article', slug=post.slug))
+    return render_template('blog/post.html', form=form, post=post, action="edit")
+
+@blog_app.route('/delete/<slug>')
+@login_required
+def delete(slug):
+    post = Post.query.filter_by(slug=slug).first_or_404()
+    post.live = False
+    db.session.commit()
+    flash("Article deleted")
+    return redirect(url_for('.index'))
 
 def _image_resize(original_file_path,image_id, image_base, extension):
     file_path = os.path.join(

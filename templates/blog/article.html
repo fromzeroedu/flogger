@@ -23,7 +23,11 @@
     {{ post.body|markdown }}
 
     <hr />
-    <div class="text-muted">Posted by {{ post.author.full_name }} on {{ post.publish_date.strftime('%Y-%m-%d') }} in {{ post.category.name }}
+    <div class="text-muted">
+      Posted by {{ post.author.full_name }} on {{ post.publish_date.strftime('%Y-%m-%d') }} in {{ post.category.name }}
+      {% if session.id %}
+      <a href="{{ url_for('.edit', slug=post.slug) }}">Edit</a>
+      {% endif %}
     </div>
 
   </div>

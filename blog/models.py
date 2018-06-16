@@ -8,8 +8,8 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
     title = db.Column(db.String(80))
     body = db.Column(db.Text)
-    image = db.Column(db.String(255))
-    slug = db.Column(db.String(256), unique=True)
+    image = db.Column(db.String(36))
+    slug = db.Column(db.String(255), unique=True) # Max for varchar indexes
     publish_date = db.Column(db.DateTime)
     live = db.Column(db.Boolean)
 
@@ -18,10 +18,6 @@ class Post(db.Model):
 
     category = db.relationship('Category',
         backref=db.backref('posts', lazy='dynamic'))
-
-    @property
-    def imgsrc(self):
-        return uploaded_images.url(self.image)
 
     def __init__(self, author, title, body, category, image=None,
         slug=None, publish_date=None, live=True):

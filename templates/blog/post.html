@@ -21,13 +21,13 @@
     {% if action=="new" %}
       <form method="POST" action="{{ url_for('.post') }}" enctype="multipart/form-data" role="form">
     {% else %}
-      <form method="POST" action="{{ url_for('.edit', post_id=post.id) }}" enctype="multipart/form-data" role="form">
+      <form method="POST" action="{{ url_for('.edit', slug=post.slug) }}" enctype="multipart/form-data" role="form">
     {% endif %}
 
     {{ form.hidden_tag() }}
 
     {% if post and post.image %}
-      <img src="{{ post.imgsrc }}" height="80px" class="img-rounded">
+      <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.lg.png') }}" width="300px" class="img-rounded" />
     {% endif %}
 
     {{ render_field(form.image, class='form-control') }}
