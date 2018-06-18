@@ -36,11 +36,11 @@ class AuthorTest(unittest.TestCase):
 
     def user_dict(self):
         return dict(
-                full_name='John Smith',
-                email='jsmith@example.com',
-                password='test123',
-                confirm='test123'
-                )
+            full_name='John Smith',
+            email='jsmith@example.com',
+            password='test123',
+            confirm='test123'
+        )
 
     def test_user_register(self):
         # Check user registration

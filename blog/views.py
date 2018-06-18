@@ -21,9 +21,10 @@ def index():
     page = int(request.values.get('page', '1'))
     posts = Post.query.filter_by(live=True).order_by(Post.publish_date.desc())\
         .paginate(page, POSTS_PER_PAGE, False)
-    return render_template('blog/article_list.html',
+    return render_template('blog/index.html',
         posts=posts,
-        title="Latest Posts")
+        title="Latest Posts"
+    )
 
 @blog_app.route('/post', methods=('GET', 'POST'))
 @login_required
@@ -78,6 +79,7 @@ def post():
         post.slug = slug
         db.session.commit()
 
+        flash('Article posted')
         return redirect(url_for('.article', slug=slug))
 
     return render_template('blog/post.html',
@@ -100,6 +102,7 @@ def edit(slug):
 
     if form.validate_on_submit():
         original_image = post.image
+        original_title = post.title
         form.populate_obj(post)
 
         if form.image.data:
@@ -125,6 +128,10 @@ def edit(slug):
             db.session.add(new_category)
             db.session.flush()
             post.category = new_category
+
+        # update slug if title changed
+        if form.title.data != original_title:
+            post.slug = slugify(str(post.id) + '-' + form.title.data)
 
         # process tags
         _save_tags(post, tags_field)
@@ -156,10 +163,11 @@ def categories(category_id):
     posts = Post.query.filter_by(category=category, live=True)\
         .order_by(Post.publish_date.desc())\
         .paginate(page, POSTS_PER_PAGE, False)
-    return render_template('blog/article_list.html',
+    return render_template('blog/category_posts.html',
         posts=posts,
-        title=category
-        )
+        title=category,
+        category_id=category_id
+    )
 
 @blog_app.route('/tags/<tag>')
 def tags(tag):
@@ -168,10 +176,11 @@ def tags(tag):
     posts = tag.posts.filter_by(live=True)\
         .order_by(Post.publish_date.desc())\
         .paginate(page, POSTS_PER_PAGE, False)
-    return render_template('blog/article_list.html',
+    return render_template('blog/tag_posts.html',
         posts=posts,
-        title="Tag: " + str(tag)
-        )
+        title="Tag: " + str(tag),
+        tag=str(tag)
+    )
 
 def _image_resize(original_file_path,image_id, image_base, extension):
     file_path = os.path.join(
