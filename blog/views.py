@@ -21,7 +21,9 @@ def index():
     page = int(request.values.get('page', '1'))
     posts = Post.query.filter_by(live=True).order_by(Post.publish_date.desc())\
         .paginate(page, POSTS_PER_PAGE, False)
-    return render_template('blog/index.html', posts=posts)
+    return render_template('blog/article_list.html',
+        posts=posts,
+        title="Latest Posts")
 
 @blog_app.route('/post', methods=('GET', 'POST'))
 @login_required
@@ -146,6 +148,30 @@ def delete(slug):
     db.session.commit()
     flash("Article deleted")
     return redirect(url_for('.index'))
+
+@blog_app.route('/categories/<category_id>')
+def categories(category_id):
+    category = Category.query.filter_by(id=category_id).first_or_404()
+    page = int(request.values.get('page', '1'))
+    posts = Post.query.filter_by(category=category, live=True)\
+        .order_by(Post.publish_date.desc())\
+        .paginate(page, POSTS_PER_PAGE, False)
+    return render_template('blog/article_list.html',
+        posts=posts,
+        title=category
+        )
+
+@blog_app.route('/tags/<tag>')
+def tags(tag):
+    tag = Tag.query.filter_by(name=tag).first_or_404()
+    page = int(request.values.get('page', '1'))
+    posts = tag.posts.filter_by(live=True)\
+        .order_by(Post.publish_date.desc())\
+        .paginate(page, POSTS_PER_PAGE, False)
+    return render_template('blog/article_list.html',
+        posts=posts,
+        title="Tag: " + str(tag)
+        )
 
 def _image_resize(original_file_path,image_id, image_base, extension):
     file_path = os.path.join(

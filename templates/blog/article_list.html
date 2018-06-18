@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Home - {{ config['BLOG_NAME'] }}{% endblock %}
+{% block title %}{{ title }} - {{ config['BLOG_NAME'] }}{% endblock %}
 
 {% block nav %}{% include 'nav.html' %}{% endblock %}
 
@@ -12,11 +12,13 @@
 
     {% include '_flashmessages.html' %}
 
+    <h4>{{ title }}</h4>
+
     <div class="post-list">
       {% for post in posts.items %}
       <div class="row post-item pt-3">
         <div class="col-md-9">
-          <h4><a href="{{ url_for('blog_app.article', slug=post.slug) }}">{{ post.title }}</a></h4>
+          <h5><a href="{{ url_for('blog_app.article', slug=post.slug) }}">{{ post.title }}</a></h5>
           <div class="post-body">{{ post.body[:220] }}</div>
           <div class="text-muted">Posted by {{ post.author.full_name }} on {{ post.publish_date.strftime('%Y-%m-%d') }} in {{ post.category.name }}
           </div>
