@@ -6,7 +6,7 @@ from PIL import Image
 from slugify import slugify
 
 from application import db
-from blog.models import Post, Category
+from blog.models import Post, Category, Tag
 from blog.forms import PostForm
 from author.models import Author
 from author.decorators import login_required
@@ -27,6 +27,8 @@ def index():
 @login_required
 def post():
     form = PostForm()
+    tags_field = request.values.get('tags_field', '')
+
     if form.validate_on_submit():
         image_id = None
 
@@ -62,6 +64,10 @@ def post():
             category=category,
             image=image_id
         )
+
+        # process tags
+        _save_tags(post, tags_field)
+
         db.session.add(post)
         db.session.commit()
 
@@ -71,7 +77,12 @@ def post():
         db.session.commit()
 
         return redirect(url_for('.article', slug=slug))
-    return render_template('blog/post.html', form=form, action="new")
+
+    return render_template('blog/post.html',
+        form=form,
+        action="new",
+        tags_field=tags_field
+    )
 
 @blog_app.route('/posts/<slug>')
 def article(slug):
@@ -83,6 +94,8 @@ def article(slug):
 def edit(slug):
     post = Post.query.filter_by(slug=slug).first_or_404()
     form = PostForm(obj=post)
+    tags_field = request.values.get('tags_field', _load_tags_field(post))
+
     if form.validate_on_submit():
         original_image = post.image
         form.populate_obj(post)
@@ -111,10 +124,19 @@ def edit(slug):
             db.session.flush()
             post.category = new_category
 
+        # process tags
+        _save_tags(post, tags_field)
+
         db.session.commit()
         flash('Article edited')
         return redirect(url_for('.article', slug=post.slug))
-    return render_template('blog/post.html', form=form, post=post, action="edit")
+
+    return render_template('blog/post.html',
+        form=form,
+        post=post,
+        action="edit",
+        tags_field=tags_field
+    )
 
 @blog_app.route('/delete/<slug>')
 @login_required
@@ -138,3 +160,19 @@ def _image_resize(original_file_path,image_id, image_base, extension):
     )
     image.save(modified_file_path)
     return
+
+def _save_tags(post, tags_field):
+    post.tags.clear()
+    for tag_item in tags_field.split(','):
+        tag = Tag.query.filter_by(name=slugify(tag_item)).first()
+        if not tag:
+            tag = Tag(name=slugify(tag_item))
+            db.session.add(tag)
+        post.tags.append(tag)
+    return post
+
+def _load_tags_field(post):
+    tags_field = '';
+    for tag in post.tags:
+        tags_field += tag.name + ', '
+    return tags_field[:-2]
