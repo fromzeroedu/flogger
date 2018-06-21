@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash
 from author.models import Author
 
 class LoginForm(FlaskForm):
-    email = EmailField('Email address', [validators.DataRequired(), validators.Email()])
+    email = EmailField('Email address', [validators.InputRequired(), validators.Email()])
     password = PasswordField('New Password', [
             validators.Required(),
             validators.Length(min=4, max=80)
@@ -30,8 +30,8 @@ class LoginForm(FlaskForm):
             self.password.errors.append('Incorrect email or password')
 
 class RegisterForm(FlaskForm):
-    full_name = StringField('Full Name', [validators.DataRequired()])
-    email = EmailField('Email address', [validators.DataRequired(), validators.Email()])
+    full_name = StringField('Full Name', [validators.InputRequired()])
+    email = EmailField('Email address', [validators.InputRequired(), validators.Email()])
     password = PasswordField('New Password', [
             validators.Required(),
             validators.Length(min=4, max=80)
