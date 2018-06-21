@@ -3,10 +3,10 @@ from wtforms import validators, StringField, PasswordField
 from wtforms.fields.html5 import EmailField
 
 class RegisterForm(FlaskForm):
-    full_name = StringField('Full Name', [validators.DataRequired()])
-    email = EmailField('Email address', [validators.DataRequired(), validators.Email()])
+    full_name = StringField('Full Name', [validators.InputRequired()])
+    email = EmailField('Email address', [validators.InputRequired(), validators.Email()])
     password = PasswordField('New Password', [
-            validators.DataRequired(),
+            validators.InputRequired(),
             validators.Length(min=4, max=80)
         ])
     confirm = PasswordField('Repeat Password', [
