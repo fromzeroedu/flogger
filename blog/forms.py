@@ -14,10 +14,10 @@ class PostForm(FlaskForm):
         FileAllowed(['jpg', 'png'], 'We only accept JPG or PNG images')
     ])
     title = StringField('Title', [
-            validators.Required(),
+            validators.DataRequired(),
             validators.Length(max=80)
         ])
-    body = TextAreaField('Content', validators=[validators.Required()])
+    body = TextAreaField('Content', validators=[validators.DataRequired()])
     category = QuerySelectField('Category', query_factory=categories,
         allow_blank=True)
     new_category = StringField('New Category')

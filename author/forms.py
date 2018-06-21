@@ -30,7 +30,7 @@ class LoginForm(FlaskForm):
             self.password.errors.append('Incorrect email or password')
 
 class RegisterForm(FlaskForm):
-    full_name = StringField('Full Name', [validators.Required()])
+    full_name = StringField('Full Name', [validators.DataRequired()])
     email = EmailField('Email address', [validators.DataRequired(), validators.Email()])
     password = PasswordField('New Password', [
             validators.Required(),
