@@ -8,6 +8,11 @@
     </div>
     <div>
       {{ form.password.label }} {{ form.password }}
+      {% if form.password.errors %}
+        {% for error in form.password.errors %}
+          {{ error }}
+        {% endfor %}
+      {% endif %}
     </div>
     <div>
       {{ form.confirm.label }} {{ form.confirm }}
