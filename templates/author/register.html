@@ -1,5 +1,5 @@
 <form method="POST" action="{{ url_for('.register')}}">
-    {{ form.csrf_token }}
+    {{ form.hidden_tag()  }}
     <div>
       {{ form.full_name.label }} {{ form.full_name }}
     </div>
