@@ -1,14 +1,29 @@
-{% from "_formhelpers.html" import render_field %}
+{% extends "base.html" %}
 
-<form method="POST" action="{{ url_for('.register')}}">
-    {{ form.hidden_tag()  }}
+{% block title %}Author Registration{% endblock %}
 
-    {{ render_field(form.full_name) }}
-    {{ render_field(form.email) }}
-    {{ render_field(form.password) }}
-    {{ render_field(form.confirm) }}
+{% block content %}
 
-    <div>
-      <input type="submit" value="Register">
-    </div>
-</form>
+<div class="row">
+
+  <div class="offset-md-2 col-md-8">
+
+    <h4>Author Registration</h4>
+
+    {% from "_formhelpers.html" import render_field %}
+
+    <form method="POST" action="{{ url_for('.register')}}" role="form">
+        {{ form.hidden_tag()  }}
+
+        {{ render_field(form.full_name, class='form-control') }}
+        {{ render_field(form.email, class='form-control') }}
+        {{ render_field(form.password, class='form-control') }}
+        {{ render_field(form.confirm, class='form-control') }}
+
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+
+  </div>
+
+</div>
+{% endblock %}
