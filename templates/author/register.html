@@ -1,22 +1,13 @@
+{% from "_formhelpers.html" import render_field %}
+
 <form method="POST" action="{{ url_for('.register')}}">
     {{ form.hidden_tag()  }}
-    <div>
-      {{ form.full_name.label }} {{ form.full_name }}
-    </div>
-    <div>
-      {{ form.email.label }} {{ form.email }}
-    </div>
-    <div>
-      {{ form.password.label }} {{ form.password }}
-      {% if form.password.errors %}
-        {% for error in form.password.errors %}
-          {{ error }}
-        {% endfor %}
-      {% endif %}
-    </div>
-    <div>
-      {{ form.confirm.label }} {{ form.confirm }}
-    </div>
+
+    {{ render_field(form.full_name) }}
+    {{ render_field(form.email) }}
+    {{ render_field(form.password) }}
+    {{ render_field(form.confirm) }}
+
     <div>
       <input type="submit" value="Register">
     </div>
