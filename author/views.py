@@ -1,10 +1,9 @@
 from flask import Blueprint, render_template, redirect, session, request, url_for, flash
-from author.forms import RegisterForm, LoginForm
-from author.models import Author
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from application import db
 from author.models import Author
+from author.forms import RegisterForm, LoginForm
 
 author_app = Blueprint('author_app', __name__)
 
