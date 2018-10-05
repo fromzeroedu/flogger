@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Author Login{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="offset-md-2 col-md-8">
+
+    <h4>Author Login</h4>
+
+    {% from "_formhelpers.html" import render_field %}
+    <form method="POST" action="{{ url_for('.login')}}" role="form">
+
+      {{ form.hidden_tag() }}
+
+      {{ render_field(form.email, class='form-control') }}
+      {{ render_field(form.password, class='form-control') }}
+
+      <button type="submit" class="btn btn-primary">Login</button>
+
+    </form>
+
+  </div>
+
+</div>
+{% endblock %}

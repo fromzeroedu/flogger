@@ -21,3 +21,13 @@ def register():
         db.session.commit()
         return f'Author ID: {author.id}'
     return render_template('author/register.html', form=form)
+
+@author_app.route('/login', methods=('GET', 'POST'))
+def login():
+    form = LoginForm()
+    error = None
+
+    if form.validate_on_submit():
+        return 'Logged in'
+
+    return render_template('author/login.html', form=form, error=error)
