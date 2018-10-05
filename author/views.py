@@ -28,6 +28,9 @@ def login():
     error = None
 
     if form.validate_on_submit():
-        return 'Logged in'
+        author = Author.query.filter_by(email=form.email.data).first()
+        session['id'] = author.id
+        session['full_name'] = author.full_name
+        return redirect(url_for('blog_app.index'))
 
     return render_template('author/login.html', form=form, error=error)
