@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import validators, StringField, PasswordField
+from wtforms import validators, StringField, PasswordField, ValidationError
 from wtforms.fields.html5 import EmailField
 
 from author.models import Author
