@@ -4,6 +4,13 @@ from wtforms.fields.html5 import EmailField
 
 from author.models import Author
 
+class LoginForm(FlaskForm):
+    email = EmailField('Email address', [validators.InputRequired(), validators.Email()])
+    password = PasswordField('New Password', [
+            validators.Required(),
+            validators.Length(min=4, max=80)
+        ])
+
 class RegisterForm(FlaskForm):
     full_name = StringField('Full Name', [validators.InputRequired()])
     email = EmailField('Email address', [validators.InputRequired(), validators.Email()])
