@@ -34,3 +34,9 @@ def login():
         return redirect(url_for('blog_app.index'))
 
     return render_template('author/login.html', form=form, error=error)
+
+@author_app.route('/logout')
+def logout():
+    session.pop('id')
+    session.pop('full_name')
+    return redirect(url_for('.login'))
