@@ -33,3 +33,17 @@ class AuthorTest(unittest.TestCase):
         with self.app_factory.app_context():
             db.drop_all()
         self.test_db.drop_db()
+
+    def user_dict(self):
+        return dict(
+            full_name='John Smith',
+            email='jsmith@example.com',
+            password='test123',
+            confirm='test123'
+        )
+
+    def test_user_register(self):
+        # Check user registration
+        rv = self.app.post('/register', data=self.user_dict(),
+            follow_redirects=True)
+        assert 'You are now registered' in str(rv.data)
