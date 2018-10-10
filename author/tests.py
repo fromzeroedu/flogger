@@ -47,3 +47,22 @@ class AuthorTest(unittest.TestCase):
         rv = self.app.post('/register', data=self.user_dict(),
             follow_redirects=True)
         assert 'You are now registered' in str(rv.data)
+
+        # If we want to check things as we were running in a views.py
+        # we need to instantiate a context
+        with self.app as c:
+            rv = c.get('/')
+            assert Author.query.filter_by(email=self.user_dict()['email']).count() == 1
+
+        # Try to register user with the same email
+        rv = self.app.post('/register', data=self.user_dict(),
+            follow_redirects=True)
+        assert 'Email already in use' in str(rv.data)
+
+        # Try to register user with mismatching passwords
+        user2 = self.user_dict()
+        user2['email'] = 'john@example.com'
+        user2['confirm'] = 'test456'
+        rv = self.app.post('/register', data=user2,
+            follow_redirects=True)
+        assert 'Passwords must match' in str(rv.data)
