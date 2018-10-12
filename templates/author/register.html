@@ -2,6 +2,8 @@
 
 {% block title %}Author Registration{% endblock %}
 
+{% block nav %}{% include 'nav.html' %}{% endblock %}
+
 {% block content %}
 
 <div class="row">
@@ -13,14 +15,14 @@
     {% from "_formhelpers.html" import render_field %}
 
     <form method="POST" action="{{ url_for('.register')}}" role="form">
-        {{ form.hidden_tag()  }}
+      {{ form.hidden_tag() }}
 
-        {{ render_field(form.full_name, class='form-control') }}
-        {{ render_field(form.email, class='form-control') }}
-        {{ render_field(form.password, class='form-control') }}
-        {{ render_field(form.confirm, class='form-control') }}
+      {{ render_field(form.full_name, class='form-control') }}
+      {{ render_field(form.email, class='form-control') }}
+      {{ render_field(form.password, class='form-control') }}
+      {{ render_field(form.confirm, class='form-control') }}
 
-        <button type="submit" class="btn btn-primary">Register</button>
+      <button type="submit" class="btn btn-primary">Register</button>
     </form>
 
   </div>

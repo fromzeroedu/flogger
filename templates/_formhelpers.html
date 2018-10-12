@@ -3,11 +3,11 @@
   {{ field.label }}
   {{ field(**kwargs)|safe }}
   {% if field.errors %}
-    <ul class="text-danger">
+  <ul class="text-danger">
     {% for error in field.errors %}
-      <li>{{ error }}</li>
+    <li>{{ error }}</li>
     {% endfor %}
-    </ul>
+  </ul>
   {% endif %}
 </div>
 {% endmacro %}
