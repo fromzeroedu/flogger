@@ -1,4 +1,4 @@
-from flask import Blueprint, session
+from flask import Blueprint, session, render_template
 
 blog_app = Blueprint('blog_app', __name__)
 
