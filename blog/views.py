@@ -37,7 +37,6 @@ def post():
         db.session.add(post)
         db.session.commit()
 
-        # do the slug
         slug = slugify(str(post.id) + '-' + post.title)
         post.slug = slug
         db.session.commit()
