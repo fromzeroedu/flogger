@@ -5,6 +5,7 @@ from application import db
 from blog.models import Post, Category
 from blog.forms import PostForm
 from author.models import Author
+from author.decorators import login_required
 
 blog_app = Blueprint('blog_app', __name__)
 
@@ -13,6 +14,7 @@ def index():
     return render_template('blog/index.html')
 
 @blog_app.route('/post', methods=('GET', 'POST'))
+@login_required
 def post():
     form = PostForm()
 
