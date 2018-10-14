@@ -1,6 +1,7 @@
 from flask import Blueprint, session, render_template, session
 from slugify import slugify
 
+from application import db
 from blog.models import Post, Category
 from blog.forms import PostForm
 from author.models import Author
