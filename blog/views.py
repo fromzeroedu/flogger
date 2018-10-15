@@ -1,4 +1,4 @@
-from flask import Blueprint, session, render_template, session
+from flask import Blueprint, session, render_template
 from slugify import slugify
 
 from application import db
