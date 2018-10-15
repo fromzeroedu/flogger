@@ -1,4 +1,4 @@
-from flask import Blueprint, session, render_template, session
+from flask import Blueprint, session, render_template
 from slugify import slugify
 
 from application import db
@@ -44,6 +44,14 @@ def post():
         post.slug = slug
         db.session.commit()
 
+        flash('Article posted')
+        return redirect(url_for('.article', slug=slug))
+
     return render_template('blog/post.html',
         form=form
     )
+
+@blog_app.route('/posts/<slug>')
+def article(slug):
+    post = Post.query.filter_by(slug=slug).first_or_404()
+    return render_template('blog/article.html', post=post)
