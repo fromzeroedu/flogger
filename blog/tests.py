@@ -47,6 +47,20 @@ class PostTest(unittest.TestCase):
         return dict(
             title='My Awesome Post',
             body='This is my awesome post content',
-            new_category='Tech',
-            tags_field='flask, python'
+            new_category='Tech'
         )
+
+    def test_blog_post_create(self):
+        # Post without logging in
+        rv = self.app.get('/post', follow_redirects=True)
+        assert 'Please login to continue' in str(rv.data)
+
+        # Register and login
+        rv = self.app.post('/register', data=self.user_dict())
+        rv = self.app.post('/login', data=self.user_dict())
+
+        # post first post
+        rv = self.app.post('/post', data=self.post_dict(),
+            follow_redirects=True)
+        assert 'Article posted' in str(rv.data)
+        assert 'Tech' in str(rv.data) # category        
