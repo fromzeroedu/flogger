@@ -20,7 +20,7 @@
         <div class="text-muted">
             Posted by {{ post.author.full_name }} on {{ post.publish_date.strftime('%Y-%m-%d') }}
             {% if post.category %}
-            {{ post.category.name }}
+            in {{ post.category.name }}
             {% endif %}
 
         </div>

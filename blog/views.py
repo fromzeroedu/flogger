@@ -11,7 +11,10 @@ blog_app = Blueprint('blog_app', __name__)
 
 @blog_app.route('/')
 def index():
-    return render_template('blog/index.html')
+    posts = Post.query.filter_by(live=True).order_by(Post.publish_date.desc())
+    return render_template('blog/index.html',
+        posts=posts
+    )
 
 @blog_app.route('/post', methods=('GET', 'POST'))
 @login_required
