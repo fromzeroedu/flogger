@@ -1,4 +1,4 @@
-from flask import Blueprint, session, render_template, flash, redirect, url_for
+from flask import Blueprint, session, render_template, flash, redirect, url_for, request
 from slugify import slugify
 
 from application import db

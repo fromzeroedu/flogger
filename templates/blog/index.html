@@ -15,7 +15,7 @@
         <h4>Latest Posts</h4>
 
         <div class="post-list">
-            {% for post in posts %}
+            {% for post in posts.items %}
             <div class="row post-item pt-3">
                 <div class="col-md-9">
                     <h5><a href="{{ url_for('blog_app.article', slug=post.slug) }}">{{ post.title }}</a></h5>
