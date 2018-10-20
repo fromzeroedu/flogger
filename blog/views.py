@@ -9,9 +9,13 @@ from author.decorators import login_required
 
 blog_app = Blueprint('blog_app', __name__)
 
+POSTS_PER_PAGE = 5
+
 @blog_app.route('/')
 def index():
-    posts = Post.query.filter_by(live=True).order_by(Post.publish_date.desc())
+    page = int(request.values.get('page', '1'))
+    posts = Post.query.filter_by(live=True).order_by(Post.publish_date.desc())\
+        .paginate(page, POSTS_PER_PAGE, False)
     return render_template('blog/index.html',
         posts=posts
     )
