@@ -27,6 +27,11 @@
                         {% endif %}
                     </div>
                 </div>
+                <div class="col-md-3">
+                    {% if post.image %}
+                    <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.sm.png') }}" class="img-thumbnail" />
+                    {% endif %}
+                </div>
             </div>
             <hr />
             {% endfor %}

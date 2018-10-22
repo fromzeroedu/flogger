@@ -12,6 +12,12 @@
 
         {% include '_flashmessages.html' %}
 
+        {% if post.image %}
+        <div class="container pt-3">
+            <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.lg.png') }}" class="img-fluid" />
+        </div>
+        {% endif %}
+
         <h1 class="pt-3">{{ post.title }}</h1>
 
         {{ post.body|markdown }}
