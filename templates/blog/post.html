@@ -18,6 +18,7 @@
 
             {{ form.hidden_tag() }}
 
+            {{ render_field(form.image, class='form-control') }}
             {{ render_field(form.title, class='form-control') }}
             {{ render_field(form.body, class='form-control', rows=10) }}
             {{ render_field(form.category, class='form-control') }}
