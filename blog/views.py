@@ -74,13 +74,26 @@ def post():
         return redirect(url_for('.article', slug=slug))
 
     return render_template('blog/post.html',
-        form=form
+        form=form,
+        action="new"
     )
 
 @blog_app.route('/posts/<slug>')
 def article(slug):
     post = Post.query.filter_by(slug=slug).first_or_404()
     return render_template('blog/article.html', post=post)
+
+@blog_app.route('/edit/<slug>', methods=('GET', 'POST'))
+@login_required
+def edit(slug):
+    post = Post.query.filter_by(slug=slug).first_or_404()
+    form = PostForm(obj=post)
+
+    return render_template('blog/post.html',
+        form=form,
+        post=post,
+        action="edit"
+    )
 
 def _image_resize(original_file_path,image_id, image_base, extension):
     file_path = os.path.join(
