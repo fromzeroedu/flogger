@@ -63,4 +63,26 @@ class PostTest(unittest.TestCase):
         rv = self.app.post('/post', data=self.post_dict(),
             follow_redirects=True)
         assert 'Article posted' in str(rv.data)
-        assert 'Tech' in str(rv.data) # category        
+        assert 'Tech' in str(rv.data) # category
+
+    def test_blog_post_update_delete(self):
+        # Register and post
+        rv = self.app.post('/register', data=self.user_dict())
+        rv = self.app.post('/login', data=self.user_dict())
+        rv = self.app.post('/post', data=self.post_dict())
+
+        # edit the article
+        post2 = self.post_dict()
+        post2['title'] = 'My New Awesome Post'
+        post2['tags_field'] = 'django'
+        rv = self.app.post('edit/1-' + slugify(self.post_dict()['title']),
+            data=post2,
+            follow_redirects=True)
+        assert 'Article edited' in str(rv.data)
+        assert 'My New Awesome Post' in str(rv.data)
+        assert 'flask' not in str(rv.data)
+
+        # delete the article
+        rv = self.app.get('/delete/1-' + slugify(post2['title']),
+            follow_redirects=True)
+        assert 'Article deleted' in str(rv.data)
