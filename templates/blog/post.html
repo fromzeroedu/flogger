@@ -10,13 +10,25 @@
 
     <div class="offset-md-2 col-md-8">
 
+        {% if action=="new" %}
         <h3>New Blog Post</h3>
+        {% else %}
+        <h3>Edit Blog Post</h3>
+        {% endif %}
 
         {% from "_formhelpers.html" import render_field %}
 
+        {% if action=="new" %}
         <form method="POST" action="{{ url_for('.post') }}" enctype="multipart/form-data" role="form">
+        {% else %}
+        <form method="POST" action="{{ url_for('.edit', slug=post.slug) }}" enctype="multipart/form-data" role="form">
+        {% endif %}
 
             {{ form.hidden_tag() }}
+
+            {% if post and post.image %}
+            <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.sm.png') }}" class="img-thumbnail" />
+            {% endif %}            
 
             {{ render_field(form.image, class='form-control') }}
             {{ render_field(form.title, class='form-control') }}
@@ -24,7 +36,11 @@
             {{ render_field(form.category, class='form-control') }}
             {{ render_field(form.new_category, class='form-control') }}
 
+            {% if action=="new" %}
             <button type="submit" class="btn btn-primary">Post</button>
+            {% else %}
+            <button type="submit" class="btn btn-primary">Update</button>
+            {% endif %}
 
         </form>
 
