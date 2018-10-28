@@ -28,7 +28,9 @@
             {% if post.category %}
             in {{ post.category.name }}
             {% endif %}
-
+            {% if session.id %}
+            - <a href="{{ url_for('.edit', slug=post.slug) }}">Edit</a>
+            {% endif %}
         </div>
 
     </div>
