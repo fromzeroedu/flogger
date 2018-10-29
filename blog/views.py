@@ -28,6 +28,7 @@ def index():
 @login_required
 def post():
     form = PostForm()
+    tags_field = request.values.get('tags_field', '')
 
     if form.validate_on_submit():
         image_id = None
@@ -75,7 +76,8 @@ def post():
 
     return render_template('blog/post.html',
         form=form,
-        action="new"
+        action="new",
+        tags_field=tags_field
     )
 
 @blog_app.route('/posts/<slug>')
