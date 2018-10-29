@@ -5,7 +5,7 @@ import os
 from PIL import Image
 
 from application import db
-from blog.models import Post, Category
+from blog.models import Post, Category, Tag
 from blog.forms import PostForm
 from author.models import Author
 from author.decorators import login_required
