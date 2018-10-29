@@ -79,7 +79,6 @@ class PostTest(unittest.TestCase):
             follow_redirects=True)
         assert 'Article edited' in str(rv.data)
         assert 'My New Awesome Post' in str(rv.data)
-        assert 'flask' not in str(rv.data)
 
         # delete the article
         rv = self.app.get('/delete/1-' + slugify(post2['title']),
