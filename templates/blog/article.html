@@ -28,6 +28,9 @@
             {% if post.category %}
             in {{ post.category.name }}
             {% endif %}
+            &nbsp;[{% for tag in post.tags %}
+                {{ tag }}{% if not loop.last %},{% endif %}
+            {% endfor %}]            
             {% if session.id %}
             - <a href="{{ url_for('.edit', slug=post.slug) }}">Edit</a>
             - <a href="{{ url_for('.delete', slug=post.slug) }}">Delete</a>
