@@ -47,7 +47,8 @@ class PostTest(unittest.TestCase):
         return dict(
             title='My Awesome Post',
             body='This is my awesome post content',
-            new_category='Tech'
+            new_category='Tech',
+            tags_field='flask, python'
         )
 
     def test_blog_post_create(self):
