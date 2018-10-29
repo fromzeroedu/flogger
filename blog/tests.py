@@ -74,7 +74,6 @@ class PostTest(unittest.TestCase):
         # edit the article
         post2 = self.post_dict()
         post2['title'] = 'My New Awesome Post'
-        post2['tags_field'] = 'django'
         rv = self.app.post('edit/1-' + slugify(self.post_dict()['title']),
             data=post2,
             follow_redirects=True)
