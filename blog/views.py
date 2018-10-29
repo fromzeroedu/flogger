@@ -64,6 +64,8 @@ def post():
             category=category,
         )
 
+        _save_tags(post, tags_field)
+
         db.session.add(post)
         db.session.commit()
 
@@ -153,3 +155,19 @@ def _image_resize(original_file_path,image_id, image_base, extension):
     )
     image.save(modified_file_path)
     return
+
+def _save_tags(post, tags_field):
+    post.tags.clear()
+    for tag_item in tags_field.split(','):
+        tag = Tag.query.filter_by(name=slugify(tag_item)).first()
+        if not tag:
+            tag = Tag(name=slugify(tag_item))
+            db.session.add(tag)
+        post.tags.append(tag)
+    return post
+
+def _load_tags_field(post):
+    tags_field = ''
+    for tag in post.tags:
+        tags_field += tag.name + ', '
+    return tags_field[:-2]
