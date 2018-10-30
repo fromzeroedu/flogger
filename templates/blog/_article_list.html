@@ -1,0 +1,23 @@
+<div class="post-list">
+    {% for post in posts.items %}
+    <div class="row post-item pt-3">
+        <div class="col-md-9">
+        <h5><a href="{{ url_for('blog_app.article', slug=post.slug) }}">{{ post.title }}</a></h5>
+        <div class="post-body">{{ post.body[:220] }}</div>
+        <div class="text-muted">Posted by {{ post.author.full_name }} on {{ post.publish_date.strftime('%Y-%m-%d') }}
+            {% if post.category %}
+            in <a href="{{ url_for('.categories', category_id=post.category.id )}}">
+            {{ post.category.name }}
+            </a>
+            {% endif %}
+        </div>
+        </div>
+        <div class="col-md-3">
+        {% if post.image %}
+            <img src="{{ url_for('static', filename='images/uploads/' + post.image + '.sm.png') }}" class="img-thumbnail" />
+        {% endif %}
+        </div>
+    </div>
+    <hr />
+    {% endfor %}
+</div>
