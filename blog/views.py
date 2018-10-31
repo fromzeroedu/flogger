@@ -21,7 +21,8 @@ def index():
     posts = Post.query.filter_by(live=True).order_by(Post.publish_date.desc())\
         .paginate(page, POSTS_PER_PAGE, False)
     return render_template('blog/index.html',
-        posts=posts
+        posts=posts,
+        title='Latest Posts'
     )
 
 @blog_app.route('/post', methods=('GET', 'POST'))
