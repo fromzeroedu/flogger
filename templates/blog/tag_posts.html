@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - {{ config['BLOG_NAME'] }}{% endblock %}
+
+{% block nav %}{% include 'nav.html' %}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="offset-md-2 col-md-8 pt-5">
+
+    {% include '_flashmessages.html' %}
+
+    <h4>{{ title }}</h4>
+
+    {% include 'blog/_article_list.html' %}
+
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="offset-md-2 col-md-8 pt-5">
+      {% if posts.has_prev %}
+        <a href="{{ url_for('blog_app.tags', tag=tag, page=posts.prev_num) }}">&lt;&lt; Newer posts</a>
+      {% endif %}
+      {% if posts.has_next %}
+        <a href="{{ url_for('blog_app.tags', tag=tag, page=posts.next_num) }}">Older posts &gt;&gt;</a>
+      {% endif %}
+  </div>
+
+</div>
+{% endblock %}
