@@ -26,10 +26,13 @@
         <div class="text-muted">
             Posted by {{ post.author.full_name }} on {{ post.publish_date.strftime('%Y-%m-%d') }}
             {% if post.category %}
-            in {{ post.category.name }}
+            in <a href="{{ url_for('.categories', category_id=post.category.id )}}">
+                {{ post.category.name }}
+            </a>
             {% endif %}
             &nbsp;[{% for tag in post.tags %}
-                {{ tag }}{% if not loop.last %},{% endif %}
+            <a href="{{ url_for('.tags', tag=tag.name )}}">
+                {{ tag }}</a>{% if not loop.last %},{% endif %}
             {% endfor %}]            
             {% if session.id %}
             - <a href="{{ url_for('.edit', slug=post.slug) }}">Edit</a>
